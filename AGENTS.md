@@ -10,7 +10,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 # ApplyKit project rules
 
-Read `HANDOVER.md` (context, safety rules, code map) and `AUDIT.md` (open issues) before changing anything.
+Read `AUDIT.md` (open issues and priorities) before changing anything, and `HANDOVER.md` too if it exists locally (it's kept out of git).
 
 ## Performance rules (apply to all new and changed code)
 
@@ -47,5 +47,6 @@ These are defaults, not optional extras. Use the shared building blocks listed; 
 - Don't add a dependency without checking it's needed; remove dependencies and files that become unused.
 
 **Checks before finishing**
-- `npx tsc --noEmit && npm run lint` clean; `npx next build` passes for larger changes.
+- `npx tsc --noEmit && npm run lint && npm run knip` clean (knip = no unused files, exports or dependencies; new dev scripts in `scripts/*.mts` are entry points automatically); `npx next build` passes for larger changes.
+- Don't leave one-off debug scripts, commented-out code or unused exports behind; export only what another file imports.
 - Not needed while ApplyKit runs locally for one user (revisit only if it's hosted for many users): CDN, Redis, load balancing/multiple instances, OpenTelemetry/RUM, DB connection-pool tuning beyond `postgres(url, { max: 5 })`.

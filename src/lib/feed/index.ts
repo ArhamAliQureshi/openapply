@@ -13,9 +13,9 @@ import {
 } from "./sources";
 import { ATS_SOURCES, type AtsSource, type CompanyList, type FeedPreferences, type FeedStats, type JobListing, type ScoredListing } from "./types";
 
-export type { DiscoveredCompany, FetchContext } from "./sources";
+export type { DiscoveredCompany } from "./sources";
 export type * from "./types";
-export { ATS_SOURCES, AUTO_APPLY } from "./types";
+export { ATS_SOURCES } from "./types";
 
 export const SEED_COMPANIES: CompanyList = seed;
 

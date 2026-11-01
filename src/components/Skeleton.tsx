@@ -1,7 +1,7 @@
 // Placeholder shapes shown while server data streams in. They mirror each page's layout so
 // content doesn't jump when it arrives.
 
-export function Bar({ className = "", style }: { className?: string; style?: React.CSSProperties }) {
+function Bar({ className = "", style }: { className?: string; style?: React.CSSProperties }) {
   return <div aria-hidden style={style} className={`animate-pulse rounded bg-neutral-200 ${className}`} />;
 }
 

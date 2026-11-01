@@ -14,5 +14,3 @@ export function singleFlight<T>(key: string, fn: () => Promise<T>): Promise<T> {
   inFlight.set(key, p);
   return p;
 }
-
-export const isInFlight = (key: string) => inFlight.has(key);

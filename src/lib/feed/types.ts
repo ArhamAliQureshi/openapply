@@ -13,14 +13,14 @@ export const ATS_SOURCES = [
 
 export type AtsSource = (typeof ATS_SOURCES)[number];
 
-/** ATSes whose application form our fillers can submit; Personio and Workday listings need a manual apply. */
+/** ATSes whose application form our fillers can submit (see ADAPTERS in apply/sources.ts); the rest need a manual apply. */
 export const AUTO_APPLY: Record<AtsSource, boolean> = {
   greenhouse: true,
   lever: true,
   ashby: true,
-  workable: true,
-  smartrecruiters: true,
-  recruitee: true,
+  workable: false,
+  smartrecruiters: false,
+  recruitee: false,
   personio: false,
   workday: false,
 };

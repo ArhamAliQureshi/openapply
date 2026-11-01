@@ -1,6 +1,6 @@
 // ATS-neutral description of an application form and the plan for filling it.
 
-export type FieldKind =
+type FieldKind =
   | "text"
   | "textarea"
   | "select" // single choice from options
@@ -20,7 +20,7 @@ export type FormField = {
   group: "standard" | "custom" | "eeo";
 };
 
-export type AnswerSource = "profile" | "library" | "rule" | "ai" | "default";
+type AnswerSource = "profile" | "library" | "rule" | "ai" | "default";
 
 export type PlannedAnswer = {
   fieldId: string;

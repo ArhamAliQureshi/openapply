@@ -3,9 +3,9 @@ import { AiProviderUnavailableError } from "./config";
 
 // Local models through Ollama (free, offline, slower).
 
-export const OLLAMA_BASE_URL = process.env.OLLAMA_BASE_URL ?? "http://localhost:11434";
+const OLLAMA_BASE_URL = process.env.OLLAMA_BASE_URL ?? "http://localhost:11434";
 // Local models are slow on modest hardware; allow 10 minutes by default.
-export const OLLAMA_TIMEOUT_MS = Number(process.env.OLLAMA_TIMEOUT_MS) || 600_000;
+const OLLAMA_TIMEOUT_MS = Number(process.env.OLLAMA_TIMEOUT_MS) || 600_000;
 
 type Message = { role: "system" | "user" | "assistant"; content: string };
 

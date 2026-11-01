@@ -15,8 +15,6 @@ import { ATS_SOURCES, AUTO_APPLY, type AtsSource, type BoardFailure, type Compan
 // Read-only collectors over public job-board APIs: Greenhouse, Lever and Ashby here; Workable, SmartRecruiters,
 // Recruitee, Personio and Workday in ./more-sources. Free aggregator APIs are used only to discover more boards.
 
-export { FetchError, htmlToText };
-export type { FetchContext };
 
 // ---------- Greenhouse ----------
 
@@ -31,7 +29,7 @@ type GhListJob = {
   first_published?: string | null;
 };
 
-export async function fetchGreenhouseBoard(token: string, via = "seed"): Promise<JobListing[]> {
+async function fetchGreenhouseBoard(token: string, via = "seed"): Promise<JobListing[]> {
   const data = await getJson<{ jobs: GhListJob[] }>(
     `https://boards-api.greenhouse.io/v1/boards/${encodeURIComponent(token)}/jobs?content=true`,
   );
@@ -72,7 +70,7 @@ type LeverPosting = {
   additionalPlain?: string;
 };
 
-export async function fetchLeverBoard(company: string, via = "seed"): Promise<JobListing[]> {
+async function fetchLeverBoard(company: string, via = "seed"): Promise<JobListing[]> {
   const data = await getJson<LeverPosting[]>(`https://api.lever.co/v0/postings/${encodeURIComponent(company)}?mode=json`);
   if (!Array.isArray(data)) return [];
   return data.map((p) => {
@@ -119,7 +117,7 @@ type AshbyJob = {
   compensation?: { compensationTierSummary?: string | null } | null;
 };
 
-export async function fetchAshbyBoard(org: string, via = "seed"): Promise<JobListing[]> {
+async function fetchAshbyBoard(org: string, via = "seed"): Promise<JobListing[]> {
   const data = await getJson<{ jobs: AshbyJob[] }>(
     `https://api.ashbyhq.com/posting-api/job-board/${encodeURIComponent(org)}?includeCompensation=true`,
   );
@@ -148,7 +146,7 @@ export async function fetchAshbyBoard(org: string, via = "seed"): Promise<JobLis
 
 type Fetcher = (board: string, via?: string, ctx?: FetchContext) => Promise<JobListing[]>;
 
-export const FETCHERS: Record<AtsSource, Fetcher> = {
+const FETCHERS: Record<AtsSource, Fetcher> = {
   greenhouse: fetchGreenhouseBoard,
   lever: fetchLeverBoard,
   ashby: fetchAshbyBoard,
@@ -248,10 +246,10 @@ export async function fetchMuse(categories: string[], pages = 2): Promise<Aggreg
 
 // ---------- resolving aggregator hits to ATS boards ----------
 
-export type AtsRef = { source: AtsSource; board: string; jobId?: string };
+type AtsRef = { source: AtsSource; board: string; jobId?: string };
 
 /** Finds links to any supported ATS board (and company-site ?gh_jid= links) in a URL or description. */
-export function extractAtsLinks(text: string): { refs: AtsRef[]; ghJobIds: string[] } {
+function extractAtsLinks(text: string): { refs: AtsRef[]; ghJobIds: string[] } {
   const refs: AtsRef[] = [];
   const ghJobIds: string[] = [];
   const decoded = decodeEntities(text);
@@ -292,13 +290,13 @@ export function extractAtsLinks(text: string): { refs: AtsRef[]; ghJobIds: strin
   return { refs, ghJobIds };
 }
 
-export const normName = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
+const normName = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
 
 const LEGAL_SUFFIX =
   /\b(gmbh|ag|se|inc|llc|ltd|limited|plc|corp|corporation|co|company|b\.?v|s\.?a|sas|sarl|oy|ab|as|kg|ug|group|holdings?|technologies|technology|labs|hq)\b\.?/gi;
 
 /** Plausible board tokens for a company name: "Quantum-Systems GmbH" → ["quantumsystems", "quantum-systems"]. */
-export function slugCandidates(company: string): string[] {
+function slugCandidates(company: string): string[] {
   const base = company
     .toLowerCase()
     .normalize("NFKD")

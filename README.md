@@ -103,13 +103,13 @@ npx tsx --env-file=.env.local --conditions=react-server scripts/autopilot-test.m
 npx tsx --conditions=react-server scripts/feed-test.mts
 ```
 
-Contributors and coding agents: read [`AGENTS.md`](AGENTS.md) (project rules, including **performance rules**), [`HANDOVER.md`](HANDOVER.md) (context and safety rules) and [`AUDIT.md`](AUDIT.md) (known issues and priorities).
+Contributors and coding agents: read [`AGENTS.md`](AGENTS.md) (project rules, including **performance rules**) and [`AUDIT.md`](AUDIT.md) (known issues and priorities). Run `npm run knip` to check for unused files, exports and dependencies.
 
 ## Roadmap
 
 - Fix the honesty and live-safety issues listed in `AUDIT.md`
 - Localhost-only binding, auth and CSRF protection
-- More platforms: Workable, SmartRecruiters, Recruitee (fillers written, not wired); Personio and Workday (discovery only)
+- More platforms: auto-fill for Workable, SmartRecruiters and Recruitee (their jobs already appear in the feed for manual apply); Personio and Workday (discovery only)
 - Gmail: drafts for apply-by-email jobs, reply tracking, verification codes
 - Mock interviews and ATS resume checks
 

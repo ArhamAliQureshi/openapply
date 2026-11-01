@@ -46,7 +46,7 @@ Scope: the whole app after it moved to `~/Desktop/personal/applykit`. Three read
 | medium | `live: true` comes from the request body; README says live also needs Mode=Live. | Enforce server-side. |
 | medium | Job descriptions go into AI prompts unescaped (prompt injection into answers). | Mark as untrusted data; review AI answers in live mode. |
 | medium | Upload bodies read fully before the size check. | Check `content-length` first. |
-| low | Absolute file paths stored in DB (why `scripts/fix-paths.mts` exists); raw error messages returned; no magic-byte checks; old resume files never deleted. | Store paths relative to `.data/`, generic errors, cleanup. |
+| low | Absolute file paths stored in DB (a one-off path-fix script was needed when the folder moved); raw error messages returned; no magic-byte checks; old resume files never deleted. | Store paths relative to `.data/`, generic errors, cleanup. |
 
 `npm audit --omit=dev`: **0 vulnerabilities**. 20 moderate dev-only (drizzle-kit/esbuild, eslint minimatch). No personal data in git history.
 
@@ -69,19 +69,21 @@ Findings:
 | Item | Verdict |
 |---|---|
 | Feed extension (Workable, SmartRecruiters, Recruitee, Personio, Workday) — `src/lib/feed/{types,sources,index,more-sources,http,text}.ts`, `companies.json`, `board-names.json` | **Merge after fixes.** Works: 37,940 jobs from 397 boards in ~164 s. But: autopilot picks jobs it has no filler for (must filter to `ADAPTERS`); Workable returned 429 for all boards; Recruitee custom-domain links don't parse; closed-job detection falsely closes jobs and never reopens them; 20 s timeout too short for big Greenhouse boards. |
-| Fillers for Workable / SmartRecruiters / Recruitee — `src/lib/ats/*`, `src/lib/apply/*-fill.ts`, `sources.extra.ts` | **Merge after fixes.** Compile and are dry-run safe, but not wired into `ADAPTERS`; SmartRecruiters is blocked by bot protection (keep it manual); Recruitee consent field always "needs you". |
+| Fillers for Workable / SmartRecruiters / Recruitee | **Removed in the cleanup** (never wired in). Recover them from commit `5fb84b6` (`src/lib/ats/{workable,smartrecruiters,recruitee}.ts`, `src/lib/apply/*-fill.ts`, `sources.extra.ts`) when implementing. Original verdict: merge after fixes. Compile and are dry-run safe, but not wired into `ADAPTERS`; SmartRecruiters is blocked by bot protection (keep it manual); Recruitee consent field always "needs you". |
 | YC boards — `src/lib/feed/yc-companies.json` (+ meta) | **Safe to merge** (one import + `merge()`), 93 verified boards. |
 | Matching (`src/lib/feed/match.ts`) | Remote jobs restricted to other countries pass as "Remote" (Sweden, Brazil, India…); "intern" doesn't exclude "Internship"; UAE aliases missing (Ras Al Khaimah, GCC, MENA, EMEA); "wales" matches New South Wales. |
 | UI text | Still says "250 companies", "Greenhouse, Lever, Ashby", "about a minute". |
 
 ## 6. Open-source release checklist
 
+Status 2026-11-01: published at github.com/ArhamAliQureshi/openapply under MIT. Done: 1 (`!.env.example`), 2, 3 (README rewritten), 4 (LICENSE + package.json license; SECURITY.md/CI still open), 6 (example.com personas, template SVGs removed). Still open: 5 (localhost binding + auth/CSRF), 7 (rotate key), SECURITY.md, CI.
+
 1. `.gitignore`: add `!.env.example` (it's currently ignored by `.env*`), plus `*.log`, `scripts/_*`.
 2. Rewrite `.env.example` with every variable (`AI_PROVIDER`, `OPENROUTER_API_KEY`, `OPENROUTER_MODEL`, `ANTHROPIC_API_KEY`, `OLLAMA_*`, `DATABASE_URL`, `ALLOW_LIVE_SUBMIT=false`, `FEED_SOURCES`, `FEED_DISCOVERY`, `PORT`, auth token).
 3. Rewrite README: Node ≥ 20.9, `npm install && npx playwright install chromium`, provider choice, supported ATS list, dry-run-first workflow, backup (`.data/`), "localhost only", data & privacy, responsible-use disclaimer (job-site terms, no CAPTCHA bypass, user is responsible for every submission).
 4. Add `LICENSE` (MIT or Apache-2.0 — all dependencies are compatible) and `"license"` in package.json; `SECURITY.md`; optional CI (tsc, lint, `npm audit --omit=dev`).
 5. Bind to 127.0.0.1 + auth/CSRF proxy (§3) before announcing.
-6. Replace test personas' LinkedIn/GitHub URLs with `example.com`; remove create-next-app SVGs; remove or wire `sources.extra.ts`.
+6. Replace test personas' LinkedIn/GitHub URLs with `example.com`; remove create-next-app SVGs; remove unwired filler code (done).
 7. Rotate the OpenRouter key that was pasted in chat.
 8. Stage files explicitly for the first commit (never `git add -A` blindly); `.data/`, `.env.local`, `.claude/`, `.next/` must stay untracked.
 

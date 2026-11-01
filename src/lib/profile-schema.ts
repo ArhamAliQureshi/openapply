@@ -3,13 +3,13 @@ import { z } from "zod";
 // Facts used to fill application forms. Everything here is the candidate's own data;
 // the filler never invents values that are not in the profile or the answer library.
 
-export const WorkAuthorizationSchema = z.object({
+const WorkAuthorizationSchema = z.object({
   country: z.string().describe("e.g. United States, United Kingdom, Germany"),
   authorized: z.boolean(),
   needsSponsorship: z.boolean(),
 });
 
-export const EeoSchema = z.object({
+const EeoSchema = z.object({
   // Empty string = decline to answer.
   gender: z.string(),
   race: z.string(),

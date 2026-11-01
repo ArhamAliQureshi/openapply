@@ -3,12 +3,12 @@ import { z } from "zod";
 // Every field is required so the schema works with Claude structured outputs.
 // Unknown values are empty strings / empty arrays rather than nulls.
 
-export const ProfileSchema = z.object({
+const ProfileSchema = z.object({
   network: z.string().describe("e.g. LinkedIn, GitHub, Portfolio"),
   url: z.string(),
 });
 
-export const WorkSchema = z.object({
+const WorkSchema = z.object({
   company: z.string(),
   position: z.string(),
   location: z.string(),
@@ -18,7 +18,7 @@ export const WorkSchema = z.object({
   highlights: z.array(z.string()).describe("Achievement bullets, verbatim where possible"),
 });
 
-export const EducationSchema = z.object({
+const EducationSchema = z.object({
   institution: z.string(),
   studyType: z.string().describe("Degree, e.g. BSc, MBA"),
   area: z.string().describe("Field of study"),
@@ -27,25 +27,25 @@ export const EducationSchema = z.object({
   score: z.string().describe("GPA / grade; empty if none"),
 });
 
-export const SkillGroupSchema = z.object({
+const SkillGroupSchema = z.object({
   name: z.string().describe("Group name, e.g. Languages, Frameworks, Tools"),
   keywords: z.array(z.string()),
 });
 
-export const ProjectSchema = z.object({
+const ProjectSchema = z.object({
   name: z.string(),
   url: z.string(),
   description: z.string(),
   highlights: z.array(z.string()),
 });
 
-export const CertificationSchema = z.object({
+const CertificationSchema = z.object({
   name: z.string(),
   issuer: z.string(),
   date: z.string(),
 });
 
-export const LanguageSchema = z.object({
+const LanguageSchema = z.object({
   language: z.string(),
   fluency: z.string(),
 });

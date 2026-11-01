@@ -22,14 +22,14 @@ export const AiSettingsSchema = z.object({
 export type AiSettings = z.infer<typeof AiSettingsSchema>;
 export type ModelChoice = z.infer<typeof ModelChoiceSchema>;
 
-export const DEFAULT_MODELS: Record<AiProvider, string> = {
+const DEFAULT_MODELS: Record<AiProvider, string> = {
   openrouter: process.env.OPENROUTER_MODEL ?? "nvidia/nemotron-3.5-super-vl:free",
   ollama: process.env.OLLAMA_MODEL ?? "gemma4:e2b",
   claude: "claude-opus-5-5",
 };
 
 // Free models that handled structured resume output in testing; used as OpenRouter fallbacks by default.
-export const DEFAULT_OPENROUTER_FALLBACKS = ["xingchen-agi/xing4.0-29b-a4b:free", "dots-studio/dots-3-note-preview:free"];
+const DEFAULT_OPENROUTER_FALLBACKS = ["xingchen-agi/xing4.0-29b-a4b:free", "dots-studio/dots-3-note-preview:free"];
 
 export const CLAUDE_MODELS = ["claude-opus-5-5", "claude-sonnet-5-5", "claude-haiku-5-5"];
 

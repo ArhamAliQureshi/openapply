@@ -44,3 +44,6 @@ next-env.d.ts
 
 # local editor/agent config
 .claude/
+
+# local-only notes for agents
+HANDOVER.md

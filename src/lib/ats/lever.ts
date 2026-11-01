@@ -21,7 +21,7 @@ export type LeverPosting = {
   additionalPlain?: string;
 };
 
-export class LeverError extends Error {}
+class LeverError extends Error {}
 
 /** Accepts jobs.lever.co/{company}/{uuid}[/apply] and jobs.eu.lever.co/…. */
 export function parseLeverUrl(input: string): LeverRef | null {
@@ -43,7 +43,7 @@ const jobsBase = (eu: boolean) => (eu ? "https://jobs.eu.lever.co" : "https://jo
 export const leverApplyUrl = (company: string, postingId: string, eu = false) =>
   `${jobsBase(eu)}/${company}/${postingId}/apply`;
 
-export async function fetchLeverPosting(company: string, postingId: string, eu = false): Promise<LeverPosting> {
+async function fetchLeverPosting(company: string, postingId: string, eu = false): Promise<LeverPosting> {
   const res = await fetch(`${apiBase(eu)}/${encodeURIComponent(company)}/${encodeURIComponent(postingId)}?mode=json`, {
     signal: AbortSignal.timeout(20_000),
   });
@@ -53,7 +53,7 @@ export async function fetchLeverPosting(company: string, postingId: string, eu =
 }
 
 /** Fetches the server-rendered apply page (plain GET, nothing is submitted). */
-export async function fetchLeverApplyPage(company: string, postingId: string, eu = false): Promise<string> {
+async function fetchLeverApplyPage(company: string, postingId: string, eu = false): Promise<string> {
   const res = await fetch(leverApplyUrl(company, postingId, eu), {
     signal: AbortSignal.timeout(30_000),
     headers: { "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0 Safari/537.36" },
@@ -134,7 +134,7 @@ const CARD_KIND: Record<string, FormField["kind"]> = {
 const STANDARD_NAMES = new Set(["resume", "name", "email", "phone", "location", "org", "comments"]);
 
 /** Turns the Lever apply page into fillable fields; ids are the real `name` attributes. */
-export function leverFields(html: string): FormField[] {
+function leverFields(html: string): FormField[] {
   const start = html.indexOf('id="application-form"');
   if (start < 0) throw new LeverError("Couldn't find the application form on the Lever page.");
   const end = html.indexOf("</form>", start);
@@ -225,7 +225,3 @@ export function leverFields(html: string): FormField[] {
   }
   return fields;
 }
-
-/** Full name for Lever's single name field (plan.ts maps Greenhouse first/last names). */
-export const leverFullName = (p: { firstName: string; lastName: string }) =>
-  [p.firstName, p.lastName].filter((s) => s.trim()).join(" ");

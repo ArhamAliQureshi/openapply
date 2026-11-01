@@ -3,7 +3,7 @@ import "server-only";
 // Polite HTTP for the feed collectors: one User-Agent, 20s timeout, a per-host concurrency cap
 // (stricter for hosts that rate-limit), and one retry on HTTP 429.
 
-export const UA = "ApplyKit/0.1 (personal job search)";
+const UA = "ApplyKit/0.1 (personal job search)";
 const TIMEOUT_MS = 20_000;
 const DEFAULT_HOST_CONCURRENCY = 4;
 // Across all hosts. With ~400 boards on ~300 hosts, unbounded parallel connects fail with "fetch failed".

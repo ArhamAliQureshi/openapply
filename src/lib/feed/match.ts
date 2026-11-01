@@ -113,7 +113,7 @@ function locationTerms(pref: string): string[] {
 }
 
 /** Does the listing's location text name one of the preferred places? Returns the matched preference. */
-export function matchLocation(location: string, prefs: string[]): string | null {
+function matchLocation(location: string, prefs: string[]): string | null {
   const loc = normalize(location);
   // Raw text keeps the case of state codes ("Austin, TX") so "in"/"or"/"me" don't match prose.
   const stateCodes = [...location.matchAll(/,\s*([A-Z]{2})\b/g)].map((m) => m[1].toLowerCase());

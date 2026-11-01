@@ -8,7 +8,7 @@ import type { Profile } from "@/lib/profile-schema";
 // GraphQL endpoint with the read-only `ApiJobPosting` query, which we call the same way.
 
 const POSTING_API = "https://api.ashbyhq.com/posting-api/job-board";
-export const ASHBY_GRAPHQL = "https://jobs.ashbyhq.com/api/non-user-graphql";
+const ASHBY_GRAPHQL = "https://jobs.ashbyhq.com/api/non-user-graphql";
 /** The only GraphQL operation the dry-run filler lets through (it renders the form). */
 export const ASHBY_FORM_QUERY = "ApiJobPosting";
 
@@ -49,7 +49,7 @@ type PostingApiJob = {
   descriptionPlain?: string;
 };
 
-export class AshbyError extends Error {}
+class AshbyError extends Error {}
 
 /** Accepts jobs.ashbyhq.com/{org}/{uuid} with an optional /application suffix. */
 export function parseAshbyUrl(input: string): { org: string; jobId: string } | null {
@@ -178,7 +178,7 @@ const STANDARD_ID: Record<string, string> = {
   _systemfield_location: "location",
   cover_letter: "cover_letter",
 };
-export const ASHBY_NAME_ID = "_systemfield_name";
+const ASHBY_NAME_ID = "_systemfield_name";
 /** Profile values for Ashby-only standard ids; planApplication's STANDARD_VALUES should include these. */
 export const ASHBY_STANDARD_VALUES: Record<string, (p: Profile) => string> = {
   [ASHBY_NAME_ID]: (p) => [p.firstName, p.lastName].filter((s) => s.trim()).join(" "),

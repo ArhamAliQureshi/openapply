@@ -284,7 +284,7 @@ const WD_MAX_PAGES = 5; // per board per run, across all search terms
 const WD_MAX_DETAILS = 12; // description requests per board, for title-matching postings only
 
 /** "Posted Today" / "Posted Yesterday" / "Posted 3 Days Ago" / "Posted 30+ Days Ago" → ISO date. */
-export function workdayPostedOn(text: string | undefined, now = Date.now()): string | null {
+function workdayPostedOn(text: string | undefined, now = Date.now()): string | null {
   if (!text) return null;
   const t = text.toLowerCase();
   let days: number | null = null;
@@ -298,7 +298,7 @@ export function workdayPostedOn(text: string | undefined, now = Date.now()): str
 }
 
 /** Board "tenant|wdN|site", e.g. "nvidia|wd5|NVIDIAExternalCareerSite". */
-export function parseWorkdayBoard(board: string): { tenant: string; wd: string; site: string } | null {
+function parseWorkdayBoard(board: string): { tenant: string; wd: string; site: string } | null {
   const [tenant, wd, site] = board.split("|");
   return tenant && /^wd\d+$/i.test(wd ?? "") && site ? { tenant, wd: wd.toLowerCase(), site } : null;
 }

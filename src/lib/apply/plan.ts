@@ -45,7 +45,7 @@ const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 const has = (s: string) => s.trim().length > 0;
 
 /** Finds a country mentioned in free text (e.g. a question), returning its canonical name. */
-export function countryIn(text: string): string | null {
+function countryIn(text: string): string | null {
   const t = ` ${norm(text)} `;
   for (const [canonical, aliases] of Object.entries(COUNTRY_ALIASES)) {
     if (aliases.some((a) => t.includes(` ${a} `))) return canonical;
@@ -213,7 +213,7 @@ const AGREE_OPTION_RE = /^(yes|i agree|agree|accept|i accept|i consent|i acknowl
 const OPEN_ENDED_RE =
   /\bwhy\b|what (excites|interests|draws|attracts|motivates)|tell us (about|why|more)|describe (a|an|your|how|the)|interest(ed)? in (this|the|joining)|cover letter|anything else|additional information|about yourself|what makes you/i;
 const FACTUAL_RE = /citizen|nationalit|clearance|visa|passport|export|criminal|convict|salary|compensation|date|address|social security|reference|referr/i;
-export const isOpenEnded = (label: string) => OPEN_ENDED_RE.test(label) && !FACTUAL_RE.test(label);
+const isOpenEnded = (label: string) => OPEN_ENDED_RE.test(label) && !FACTUAL_RE.test(label);
 
 const STANDARD_VALUES: Record<string, (p: Profile) => string> = {
   // Greenhouse ids, plus Lever's "name"/"org" and Ashby's "_systemfield_name".
