@@ -115,4 +115,4 @@ Contributors and coding agents: read [`AGENTS.md`](AGENTS.md) (project rules, in
 
 ## License
 
-No license has been chosen yet, so all rights are reserved until one is added.
+[MIT](LICENSE) © 2026 Arham Ali Qureshi
